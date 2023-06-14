@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.types import ParseMode
 from aiogram.utils import executor
-from database import get_data_from_database, get_data_from_object
+from database import get_data_from_database, get_data_from_object, get_klient_price
 import config
 
 API_TOKEN = config.TOKEN
@@ -32,6 +32,12 @@ async def send_data(message: types.Message):
             for item in data:
                 text += f"{item[0]}: {item[1]}\n"
             await message.reply(text)
+        #отправлять файл klient_price.xlsx
+        if message.text == "клиенты":
+            get_klient_price()
+            file = types.InputFile('klient_price.xls')
+            await bot.send_document(chat_id=message.from_user.id, document=file)
+
         else:
             data = await get_data_from_object(message.text)
             text = " "
