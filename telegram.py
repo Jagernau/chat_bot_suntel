@@ -3,8 +3,9 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.types import ParseMode
 from aiogram.utils import executor
-from database import get_data_from_database, get_data_from_object, get_klient_price
+from database import get_data_from_database, get_data_from_object, get_klient_price, get_klient_graf
 import config
+import funcs
 
 API_TOKEN = config.TOKEN
 
@@ -35,8 +36,14 @@ async def send_data(message: types.Message):
         #отправлять файл klient_price.xlsx
         if message.text == "клиенты":
             get_klient_price()
-            file = types.InputFile('klient_price.xls')
+            file = types.InputFile(f'{funcs.get_yesterday()}_funcsklient_price.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
+
+        if message.text == "график":
+            get_klient_graf()
+            file = types.InputFile('klient_counts.xls')
+            await bot.send_document(chat_id=message.from_user.id, document=file)
+
 
         else:
             data = await get_data_from_object(message.text)

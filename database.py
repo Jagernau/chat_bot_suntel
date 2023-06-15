@@ -3,6 +3,9 @@ import config
 import query
 import pandas as pd
 from styleframe import StyleFrame
+import funcs
+
+
 
 conn = psycopg2.connect(
     host=config.DB_HOST,
@@ -30,11 +33,29 @@ def get_klient_price():
     cursor.execute(query.klient_price)
     data = cursor.fetchall()
     df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект'])
-    excel_writer = StyleFrame.ExcelWriter('klient_price.xls')
+    excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_klient_price.xls')
     sf = StyleFrame(df)
     sf.set_column_width('Контрагент', 30)
     sf.set_column_width('Система', 10)
     sf.set_column_width('Объект', 30)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+
+
+def get_klient_graf():
+    cursor = conn.cursor()
+    cursor.execute(query.klient_price)
+    data = cursor.fetchall()
+    df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект'])
+    df['Количество'] = df.groupby('Контрагент')['Объект'].transform('count')
+    df = df.sort_values(by='Контрагент')
+    # в названии файла всавлять вчерашнее число
+    excel_writer = StyleFrame.ExcelWriter(f'klient_counts.xls')
+    sf = StyleFrame(df)
+    sf.set_column_width('Контрагент', 30)
+    sf.set_column_width('Система', 10)
+    sf.set_column_width('Объект', 30)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
+
 
