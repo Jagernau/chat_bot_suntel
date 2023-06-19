@@ -1,10 +1,12 @@
+#типизируй функции и задокументируй
+
 import psycopg2
 import config
 import query
 import pandas as pd
 from styleframe import StyleFrame
 import funcs
-
+import typing
 
 
 conn = psycopg2.connect(
@@ -15,20 +17,35 @@ conn = psycopg2.connect(
     password=config.DB_PASSWORD
 )
 
-async def get_data_from_database():
+async def get_data_from_database() -> typing.List:
+    """ 
+    Получение данных из базы данных 
+    Отдвёт в виде списка дублей
+
+    """
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM vdubles;")
     data = cursor.fetchall()
     return data
 
-async def get_data_from_object(name: str):
+
+async def get_data_from_object(name: str) -> typing.List:
+    """
+    Получение данных из базы данных по имени объекта
+    Принимает имя объекта, отдвёт в виде списка
+
+    """
     cursor = conn.cursor()
     cursor.execute(f"select * from tdata t2 where t2.dimport = '2023-05-17 01:40:00' and upper(t2.object) like '%%{name}%%'")
     data = cursor.fetchall()
     return data
 
-#функция которая результат data сохраняет в xlsx
-def get_klient_price():
+
+def get_klient_price() -> None:
+    """
+    Получение данных из базы данных
+    сохраняет в xls таблицу клиентов, систеу мониторинга, объекты
+    """
     cursor = conn.cursor()
     cursor.execute(query.klient_price)
     data = cursor.fetchall()
@@ -41,21 +58,8 @@ def get_klient_price():
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
 
-
-def get_klient_graf():
+def get_one_klient(name: str):
     cursor = conn.cursor()
-    cursor.execute(query.klient_price)
+    cursor.execute(query.detail_klient.replace('XXX', name))
     data = cursor.fetchall()
-    df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект'])
-    df['Количество'] = df.groupby('Контрагент')['Объект'].transform('count')
-    df = df.sort_values(by='Контрагент')
-    # в названии файла всавлять вчерашнее число
-    excel_writer = StyleFrame.ExcelWriter(f'klient_counts.xls')
-    sf = StyleFrame(df)
-    sf.set_column_width('Контрагент', 30)
-    sf.set_column_width('Система', 10)
-    sf.set_column_width('Объект', 30)
-    sf.to_excel(excel_writer=excel_writer)
-    excel_writer.save()
-
-
+    return data
