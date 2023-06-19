@@ -7,6 +7,7 @@ import config
 import funcs
 from buttons import keyboard
 from prettytable import PrettyTable
+import re
 
 API_TOKEN = config.TOKEN
 
@@ -41,26 +42,32 @@ async def send_data(message: types.Message):
             file = types.InputFile(f'{funcs.get_yesterday()}_klient_price.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
 
-        if "Детально" in message.text:
-            text = get_one_klient(message.text.replace("Детально ", ""))
+        if message.text == "Детально по клиенту":
+            await message.answer("Уточните фамилию:")
 
+        if  message.text != "Дубли" and message.text != "Клиенты" and message.text != "Детально по клиенту":
+            text = get_one_klient(message.text)
             client_dict = {}
             objects_list = []
             for item in text:
                 objects_list.append(item[2])
                 client_dict[item[0]] = {item[1]: objects_list}
+            if str(client_dict) == "{}":
+                pass
+            else:
+                await message.reply(f"Найден клиент: \n{client_dict}")
 
-            
-            await message.reply(f"{client_dict}")
-
-
-        else:
+        
+        if message.text != "Детально по клиенту" and message.text != "Клиенты" and message.text != "Дубли":
             data = await get_data_from_object(message.text)
 
-            text = " "
+            text = ""
             for item in data:
                 text += f"\n{item[0]}➡️{funcs.get_monitoring_system(str(item[2]))}➡️{item[3]}\n"
-            await message.reply(text)
+            if text == "":
+                await message.reply(f"{message.text} не найден объект с таким именем")
+            else:
+                await message.reply(text)
 
 
 if __name__ == '__main__':
