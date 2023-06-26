@@ -36,7 +36,7 @@ async def get_data_from_object(name: str) -> typing.List:
 
     """
     cursor = conn.cursor()
-    cursor.execute(f"select * from tdata t2 where t2.dimport = '2023-05-17 01:40:00' and upper(t2.object) like '%%{name}%%'")
+    cursor.execute(f"select * from tdata t2 where t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata) and (upper(t2.object) like '%%{name}%%' or t2.object like '%%{name}%%'or t2.object like upper('%%{name}%%'))")
     data = cursor.fetchall()
     return data
 

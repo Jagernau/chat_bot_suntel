@@ -46,16 +46,14 @@ async def send_data(message: types.Message):
             await message.answer("Уточните фамилию:")
 
         if  message.text != "Дубли" and message.text != "Клиенты" and message.text != "Детально по клиенту":
-            text = get_one_klient(message.text)
+            data_array = get_one_klient(message.text)
             client_dict = {}
             objects_list = []
-            for item in text:
+            for item in data_array:
                 objects_list.append(item[2])
                 client_dict[item[0]] = {item[1]: objects_list}
-            if str(client_dict) == "{}":
-                pass
-            else:
-                await message.reply(f"Найден клиент: \n{client_dict}")
+            
+            await message.reply(f"{data_array}")
 
         
         if message.text != "Детально по клиенту" and message.text != "Клиенты" and message.text != "Дубли":
