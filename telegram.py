@@ -2,7 +2,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.utils import executor
-from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient
+from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count
 import config
 import funcs
 from buttons import keyboard
@@ -37,26 +37,17 @@ async def send_data(message: types.Message):
                 text += f"{item[0]}: {item[1]}\n"
             await message.reply(text)
 
-        if message.text == "Клиенты":
+        if message.text == "Клиенты exel":
             get_klient_price()
             file = types.InputFile(f'{funcs.get_yesterday()}_klient_price.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
 
-        if message.text == "Детально по клиенту":
-            await message.answer("Уточните фамилию:")
 
-        if  message.text != "Дубли" and message.text != "Клиенты" and message.text != "Детально по клиенту":
+        if  message.text != "Дубли" and message.text != "Клиенты exel" and message.text != "Счётчик Сисем exel":
             data_array = get_one_klient(message.text)
-            client_dict = {}
-            objects_list = []
-            for item in data_array:
-                objects_list.append(item[2])
-                client_dict[item[0]] = {item[1]: objects_list}
-            
-            await message.reply(f"{data_array}")
-
+            await message.reply(funcs.count_objects(data_array))
         
-        if message.text != "Детально по клиенту" and message.text != "Клиенты" and message.text != "Дубли":
+        if message.text != "Счётчик Сисем exel" and message.text != "Клиенты excel" and message.text != "Дубли":
             data = await get_data_from_object(message.text)
 
             text = ""
@@ -67,6 +58,10 @@ async def send_data(message: types.Message):
             else:
                 await message.reply(text)
 
+        if message.text == "Счётчик Сисем exel":
+            get_klient_count()
+            file = types.InputFile(f'{funcs.get_yesterday()}_klient_count.xls')
+            await bot.send_document(chat_id=message.from_user.id, document=file)
 
 if __name__ == '__main__':
     from aiogram import executor

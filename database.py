@@ -63,3 +63,19 @@ def get_one_klient(name: str):
     cursor.execute(query.detail_klient.replace('XXX', name))
     data = cursor.fetchall()
     return data
+
+def get_klient_count():
+    cursor = conn.cursor()
+    cursor.execute(query.klient_price)
+    data = cursor.fetchall()
+    data_array = funcs.klient_count(data)
+    df = pd.DataFrame(data_array, columns=['Контрагент', 'Система', 'Число объектов'])
+    excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_klient_count.xls')
+    sf = StyleFrame(df)
+    sf.set_column_width('Контрагент', 30)
+    sf.set_column_width('Система', 10)
+    sf.set_column_width('Число объектов', 10)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
+
+

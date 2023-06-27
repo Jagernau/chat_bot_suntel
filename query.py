@@ -56,7 +56,7 @@ left join ttarif tt on tt.id =
     (select tt1.id from ttarif tt1 where tt1.tkid = tk.id and t2.dimport between tt1.dbeg and tt1.dend LIMIT 1)
 left join tagat ta on ta.idsystem = t2.idsystem and ta.idobject = t2.idobject and t2.dimport between ta.dbeg and ta.dend
 
-where (tk.name like 'XXX' or tk.name like '%XXX%' or tk.name like upper('%XXX%'))
+where (tk.name like 'XXX' or tk.name like '%XXX%' or tk.name like upper('%XXX%') or tk.name like INITCAP('%XXX%'))
 
 and t2.isactive = ' Да'
 and tk.inn is not null

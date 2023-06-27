@@ -1,5 +1,7 @@
 import datetime
 
+
+
 def get_yesterday() -> str:
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
@@ -20,3 +22,43 @@ def get_monitoring_system(value: str) -> str:
         return "WLocal"
     else:
         return ""
+
+def count_objects(data):
+    # Создаем словарь для хранения информации
+    clients = {}
+
+    # Проходимся по исходному массиву и заполняем словарь
+    for client, system, obj in data:
+        if client not in clients:
+            clients[client] = {}
+        if system not in clients[client]:
+            clients[client][system] = 0
+        clients[client][system] += 1
+
+    # Формируем строку с нужным форматированием
+    result = ""
+    for client, systems in clients.items():
+        for system, count in systems.items():
+            result += f"{client}, {system}, {count}\n"
+
+    return result
+
+def klient_count(data):
+    # Создаем словарь для хранения информации
+    clients = {}
+
+    # Проходимся по исходному массиву и заполняем словарь
+    for client, system, obj in data:
+        if client not in clients:
+            clients[client] = {}
+        if system not in clients[client]:
+            clients[client][system] = 0
+        clients[client][system] += 1
+
+    # Формируем список кортежей с нужным форматированием
+    result = []
+    for client, systems in clients.items():
+        for system, count in systems.items():
+            result.append((client, system, count))
+
+    return result
