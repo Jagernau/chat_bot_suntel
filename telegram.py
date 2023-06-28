@@ -45,8 +45,12 @@ async def send_data(message: types.Message):
 
         if  message.text != "Дубли" and message.text != "Клиенты exel" and message.text != "Счётчик Сисем exel":
             data_array = get_one_klient(message.text)
-            await message.reply(funcs.count_objects(data_array))
-        
+            if len(data_array) >= 1:
+                await message.reply(funcs.count_objects(data_array))
+            else:
+                message.reply(f"{message.text} Такого клиента нет")
+
+
         if message.text != "Счётчик Сисем exel" and message.text != "Клиенты excel" and message.text != "Дубли":
             data = await get_data_from_object(message.text)
 
