@@ -10,7 +10,7 @@ select
      when t2.idsystem = 16 then 'WLocal'
      else ''
      end,
-  t2.object
+  t2.object, tm.email
 
 from tdata t2
 left join twialon100 tw on tw.logintd = t2.login
@@ -18,6 +18,10 @@ left join tklient tk on tk.id = tw.tkid
 left join ttarif tt on tt.id = 
     (select tt1.id from ttarif tt1 where tt1.tkid = tk.id and t2.dimport between tt1.dbeg and tt1.dend LIMIT 1)
 left join tagat ta on ta.idsystem = t2.idsystem and ta.idobject = t2.idobject and t2.dimport between ta.dbeg and ta.dend
+
+left join temail tm on tm.inn = (case when ta.inn is not null then ta.inn else tk.inn end) 
+							    and case when tm.kpp is null and (case when ta.inn is not null then ta.kpp else tk.kpp end) is null then true 
+								else tm.kpp = (case when ta.inn is not null then ta.kpp else tk.kpp end) end
 
 where t2.isactive = ' Да'
 and tk.inn is not null
