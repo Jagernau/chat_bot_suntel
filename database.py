@@ -79,3 +79,10 @@ def get_klient_count():
     excel_writer.save()
 
 
+def show_chenge(datime):
+    cursor = conn.cursor()
+    cursor.execute(query.show_chenge_objects_to_day.replace("XXX", str(datime)))
+    today_data = cursor.fetchall()
+
+    return today_data
+

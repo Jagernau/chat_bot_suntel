@@ -1,3 +1,4 @@
+from datetime import date
 klient_price = '''
 select 
   case when ta.inn is not null then ta.name else tk.name end as "Контрагент", 
@@ -75,4 +76,10 @@ and tk.id not in (2752, 1925, 3287)
 order by 1
 '''
 
-
+show_chenge_objects_to_day = f'''
+select login, object, idsystem from tdata
+where dimport = (SELECT max(dimport) AS max FROM tdata)
+EXCEPT
+select login, object, idsystem from tdata
+where dimport = '{date.today().year}-{date.today().month}-XXX 01:40:00'
+'''
