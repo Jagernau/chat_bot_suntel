@@ -6,6 +6,7 @@ keyboard.add(
     KeyboardButton(text="Клиенты exel"),
     KeyboardButton(text="Дубли"),
     KeyboardButton(text="Счётчик Сисем exel"),
+    KeyboardButton(text="Одинаковые имена объектов"),
 )
 
 

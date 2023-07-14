@@ -1,3 +1,4 @@
+from datetime import date
 klient_price = '''
 select 
   case when ta.inn is not null then ta.name else tk.name end as "Контрагент", 
@@ -28,6 +29,7 @@ and tk.inn is not null
 --and t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata)
 --автоматически предыдущий день
 and t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata)
+
 and upper(t2.object) not like '%ТЕСТ%'
 and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTEST%')
 and upper(t2.object) not like '%ПРИОСТ%'
@@ -78,4 +80,10 @@ and tk.id not in (2752, 1925, 3287)
 order by 1
 '''
 
-
+show_chenge_objects_to_day = f'''
+select login, object, idsystem from tdata
+where dimport = (SELECT max(dimport) AS max FROM tdata)
+EXCEPT
+select login, object, idsystem from tdata
+where dimport = '{date.today().year}-{date.today().month}-XXX 01:40:00'
+'''
