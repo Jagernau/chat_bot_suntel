@@ -24,6 +24,7 @@ and tk.inn is not null
 --and t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata)
 --автоматически предыдущий день
 and t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata)
+
 and upper(t2.object) not like '%ТЕСТ%'
 and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTEST%')
 and upper(t2.object) not like '%ПРИОСТ%'

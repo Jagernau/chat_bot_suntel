@@ -1,5 +1,5 @@
 import datetime
-
+import pandas as pd
 
 
 def get_yesterday() -> str:
@@ -62,3 +62,18 @@ def klient_count(data):
             result.append((client, system, count))
 
     return result
+
+def check_excel_double():
+
+    # Загрузка данных из файла Excel
+    df = pd.read_excel(f'{get_yesterday()}_klient_price.xls')
+
+    # Выбор столбца, в котором нужно найти дубликаты
+    column_name = 'Объект'
+
+    # Поиск дубликатов строк в столбце
+    duplicates = df[df.duplicated(subset=column_name)]
+
+    # Вывод найденных дубликатов
+    return duplicates
+

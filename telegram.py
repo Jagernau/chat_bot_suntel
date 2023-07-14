@@ -67,6 +67,10 @@ async def send_data(message: types.Message):
             file = types.InputFile(f'{funcs.get_yesterday()}_klient_count.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
 
+        if message.text == "Одинаковые имена объектов":
+            double = funcs.check_excel_double()
+            await message.reply(str(double))
+
 if __name__ == '__main__':
     from aiogram import executor
     executor.start_polling(dp, skip_updates=True)
