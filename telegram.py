@@ -76,10 +76,10 @@ async def send_data(message: types.Message):
             if chenge == None:
                 await message.reply(f"{message.text} не найдены изменения за этот срок")
             else:
-                text = ""
-                for item in chenge:
-                    text += f"\n{item[0]}➡️{funcs.get_monitoring_system(str(item[2]))}➡️{item[1]}\n"
-                await message.reply(text)
+                file = types.InputFile(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
+
+                await bot.send_document(chat_id=message.from_user.id, document=file)
+
 
 if __name__ == '__main__':
     from aiogram import executor

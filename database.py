@@ -84,6 +84,11 @@ def show_chenge(datime):
     cursor = conn.cursor()
     cursor.execute(query.show_chenge_objects_to_day.replace("XXX", str(datime)))
     today_data = cursor.fetchall()
+    df = pd.DataFrame(today_data)
+    excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
+    sf = StyleFrame(df)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
 
     return today_data
 
