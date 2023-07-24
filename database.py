@@ -90,7 +90,7 @@ def show_chenge():
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
     sf = StyleFrame(df)
     sf.set_column_width('Логин', 30)
-    sf.set_column_width('Объект', 30)
+    sf.set_column_width('Объект', 40)
     sf.set_column_width('Система', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()

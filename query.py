@@ -82,8 +82,9 @@ order by 1
 
 show_chenge_objects_to_day = f'''
 select login, object, idsystem from tdata
-WHERE dimport = (SELECT CAST(MAX(dimport) - INTERVAL '1' DAY AS TIMESTAMP WITHOUT TIME ZONE) FROM tdata)
+where dimport = (SELECT max(dimport) FROM tdata)
 EXCEPT
 select login, object, idsystem from tdata
-where dimport = (SELECT max(dimport) FROM tdata)
+WHERE dimport = (SELECT CAST(MAX(dimport) - INTERVAL '1' DAY AS TIMESTAMP WITHOUT TIME ZONE) FROM tdata)
+
 '''
