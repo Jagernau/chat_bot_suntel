@@ -86,7 +86,7 @@ def show_chenge():
     cursor.execute(query.show_chenge_objects_to_day)
     today_data = cursor.fetchall()
     df = pd.DataFrame(today_data, columns=['Логин', 'Объект', 'Система'])
-    df['Система'] = df['Система'].apply(lambda x: funcs.get_monitoring_system(x))
+    df['Система'] = df['Система'].apply(lambda x: funcs.get_monitoring_system((x)))
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
     sf = StyleFrame(df)
     sf.set_column_width('Логин', 30)

@@ -11,17 +11,17 @@ def get_yesterday() -> str:
     return yesterday.strftime("%Y-%m-%d")
 
 def get_monitoring_system(value: str) -> str:
-    if value == "11":
+    if value == "11" or value == 11:
         return "WHost"
-    elif value == "12":
+    elif value == "12" or value == 12:
         return "Fort"
-    elif value == "13":
+    elif value == "13" or value == 13:
         return "GSoft"
-    elif value == "14":
+    elif value == "14" or value == 14:
         return "Scout"
-    elif value == "15":
+    elif value == "15" or value == 15:
         return "Era"
-    elif value == "16":
+    elif value == "16" or value == 16:
         return "WLocal"
     else:
         return ""

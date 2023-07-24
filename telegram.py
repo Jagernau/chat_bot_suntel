@@ -71,14 +71,10 @@ async def send_data(message: types.Message):
             double = funcs.check_excel_double()
             await message.reply(str(double))
 
-        if "New" in message.text:
-            chenge = show_chenge()
-            if chenge == None:
-                await message.reply(f"{message.text} не найдены изменения за этот срок")
-            else:
-                file = types.InputFile(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
-
-                await bot.send_document(chat_id=message.from_user.id, document=file)
+        if "NewObject" in message.text:
+            show_chenge()
+            file = types.InputFile(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
+            await bot.send_document(chat_id=message.from_user.id, document=file)
 
 
 if __name__ == '__main__':
