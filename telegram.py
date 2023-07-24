@@ -71,8 +71,8 @@ async def send_data(message: types.Message):
             double = funcs.check_excel_double()
             await message.reply(str(double))
 
-        if "new: " in message.text:
-            chenge = show_chenge(str(message.text).replace("new: ", ""))
+        if "New" in message.text:
+            chenge = show_chenge()
             if chenge == None:
                 await message.reply(f"{message.text} не найдены изменения за этот срок")
             else:

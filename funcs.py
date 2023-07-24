@@ -1,5 +1,8 @@
 import datetime
 import pandas as pd
+import psycopg2
+import Levenshtein
+
 
 
 def get_yesterday() -> str:
@@ -76,4 +79,5 @@ def check_excel_double():
 
     # Вывод найденных дубликатов
     return duplicates
+
 

@@ -7,11 +7,12 @@ import pandas as pd
 from styleframe import StyleFrame
 import funcs
 import typing
+import Levenshtein
 
 
 conn = psycopg2.connect(
     host=config.DB_HOST,
-    port="5432",
+    port="5333",
     database=config.DB_NAME,
     user=config.DB_USER,
     password=config.DB_PASSWORD
@@ -80,15 +81,35 @@ def get_klient_count():
     excel_writer.save()
 
 
-def show_chenge(datime):
+def show_chenge():
     cursor = conn.cursor()
-    cursor.execute(query.show_chenge_objects_to_day.replace("XXX", str(datime)))
+    cursor.execute(query.show_chenge_objects_to_day)
     today_data = cursor.fetchall()
-    df = pd.DataFrame(today_data)
+    df = pd.DataFrame(today_data, columns=['Логин', 'Объект', 'Система'])
+    df['Система'] = df['Система'].apply(lambda x: funcs.get_monitoring_system(x))
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
     sf = StyleFrame(df)
+    sf.set_column_width('Логин', 30)
+    sf.set_column_width('Объект', 30)
+    sf.set_column_width('Система', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
 
-    return today_data
 
+# def get_top_words():
+#     cursor = conn.cursor()
+#     cursor.execute(query.klient_price)
+#     data = cursor.fetchall()
+#     words = set()
+#     similar = set()
+#     for i in data:
+#         words.add(i[0].replace('ЭДО', '').replace('ООО', '').replace("()", "").replace(")", "").replace("(", "").lower())
+#     for i in words:
+#         for z in words:
+#             if i == z:
+#                 continue
+#             if Levenshtein.ratio(i, z) > 0.6:
+#                 similar.add(Levenshtein.median([i, z]))
+#     return similar
+#
+# print(get_top_words())
