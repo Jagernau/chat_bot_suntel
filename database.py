@@ -7,12 +7,12 @@ import pandas as pd
 from styleframe import StyleFrame
 import funcs
 import typing
-import Levenshtein
+
 
 
 conn = psycopg2.connect(
     host=config.DB_HOST,
-    port="5333",
+    port="5432",
     database=config.DB_NAME,
     user=config.DB_USER,
     password=config.DB_PASSWORD
