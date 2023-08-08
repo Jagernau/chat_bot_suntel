@@ -130,7 +130,7 @@ order by 1
 
 all_db_object_today = '''
 
-select object from tdata
+select object, login from tdata
 where dimport = (SELECT max(dimport) FROM tdata)
 and idsystem = XXX
 

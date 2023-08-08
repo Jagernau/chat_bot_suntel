@@ -27,6 +27,7 @@ async def get_data_from_database() -> typing.List:
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM vdubles;")
     data = cursor.fetchall()
+    cursor.close()
     return data
 
 
@@ -39,6 +40,7 @@ async def get_data_from_object(name: str) -> typing.List:
     cursor = conn.cursor()
     cursor.execute(f"select * from tdata t2 where t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata) and (upper(t2.object) like '%%{name}%%' or t2.object like '%%{name}%%'or t2.object like upper('%%{name}%%'))")
     data = cursor.fetchall()
+    cursor.close()
     return data
 
 
@@ -119,12 +121,19 @@ def show_not_abons(id_system):
         set_abonents_objects.add(i[1])
 
     difference = set_today_objects.difference(set_abonents_objects)
+    difference = list(difference)
     idsystem = funcs.get_monitoring_system(id_system)
-    df = pd.DataFrame(difference, columns=[str(idsystem)])
+    full_data = []
+    for i in difference:
+        for z in today_objects:
+            if i == z[0]:
+                full_data.append([i,z[1]])
+
+    df = pd.DataFrame(full_data, columns=[str(idsystem), "Логин"])
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_difference.xls')
     sf = StyleFrame(df)
     sf.set_column_width(str(idsystem), 50)
+    sf.set_column_width("Логин", 30)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
     
-
