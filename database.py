@@ -12,7 +12,7 @@ import typing
 
 conn = psycopg2.connect(
     host=config.DB_HOST,
-    port="5432",
+    port="5333",
     database=config.DB_NAME,
     user=config.DB_USER,
     password=config.DB_PASSWORD
@@ -50,13 +50,13 @@ def get_klient_price() -> None:
     cursor = conn.cursor()
     cursor.execute(query.klient_price)
     data = cursor.fetchall()
-    df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект', 'Почта'])
+    df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект'])
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_klient_price.xls')
     sf = StyleFrame(df)
     sf.set_column_width('Контрагент', 30)
     sf.set_column_width('Система', 10)
     sf.set_column_width('Объект', 30)
-    sf.set_column_width('Почта', 30)
+
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
 
