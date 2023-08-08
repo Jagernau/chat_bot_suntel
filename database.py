@@ -27,6 +27,7 @@ async def get_data_from_database() -> typing.List:
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM vdubles;")
     data = cursor.fetchall()
+    cursor.close()
     return data
 
 
@@ -39,6 +40,7 @@ async def get_data_from_object(name: str) -> typing.List:
     cursor = conn.cursor()
     cursor.execute(f"select * from tdata t2 where t2.dimport = (SELECT max(tdata.dimport) AS max FROM tdata) and (upper(t2.object) like '%%{name}%%' or t2.object like '%%{name}%%'or t2.object like upper('%%{name}%%'))")
     data = cursor.fetchall()
+    cursor.close()
     return data
 
 
