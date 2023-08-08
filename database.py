@@ -59,11 +59,13 @@ def get_klient_price() -> None:
 
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    cursor.close()
 
 def get_one_klient(name: str):
     cursor = conn.cursor()
     cursor.execute(query.detail_klient.replace('XXX', name))
     data = cursor.fetchall()
+    cursor.close()
     return data
 
 def get_klient_count():
@@ -79,6 +81,7 @@ def get_klient_count():
     sf.set_column_width('Число объектов', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    cursor.close()
 
 
 def show_chenge():
@@ -94,22 +97,34 @@ def show_chenge():
     sf.set_column_width('Система', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    cursor.close()
 
+def show_not_abons(id_system):
+    cursor = conn.cursor()
+    cursor.execute(query.all_db_object_today.replace('XXX', str(id_system)))
+    today_objects = cursor.fetchall()
+    cursor.close()
+    cursor = conn.cursor()
+    cursor.execute(query.abonents_object.replace('XXX', str(id_system)))
+    abonents_objects = cursor.fetchall()
+    cursor.close()
 
-# def get_top_words():
-#     cursor = conn.cursor()
-#     cursor.execute(query.klient_price)
-#     data = cursor.fetchall()
-#     words = set()
-#     similar = set()
-#     for i in data:
-#         words.add(i[0].replace('ЭДО', '').replace('ООО', '').replace("()", "").replace(")", "").replace("(", "").lower())
-#     for i in words:
-#         for z in words:
-#             if i == z:
-#                 continue
-#             if Levenshtein.ratio(i, z) > 0.6:
-#                 similar.add(Levenshtein.median([i, z]))
-#     return similar
-#
-# print(get_top_words())
+    set_today_objects = set()
+    set_abonents_objects = set()
+
+    for i in today_objects:
+        set_today_objects.add(i[0])
+
+    for i in abonents_objects:
+        set_abonents_objects.add(i[1])
+
+    difference = set_today_objects.difference(set_abonents_objects)
+    idsystem = funcs.get_monitoring_system(id_system)
+    df = pd.DataFrame(difference, columns=[str(idsystem)])
+    excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_difference.xls')
+    sf = StyleFrame(df)
+    sf.set_column_width(str(idsystem), 50)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
+    
+

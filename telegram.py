@@ -2,7 +2,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.utils import executor
-from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge
+from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge, show_not_abons 
 import config
 import funcs
 from buttons import keyboard
@@ -75,7 +75,14 @@ async def send_data(message: types.Message):
             show_chenge()
             file = types.InputFile(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
+        
+        if "лишние:" in message.text:
+            show_not_abons(str(message.text).split(":")[1])
+            file = types.InputFile(f'{funcs.get_yesterday()}_difference.xls')
+            await bot.send_document(chat_id=message.from_user.id, document=file)
 
+
+            
 
 if __name__ == '__main__':
     from aiogram import executor
