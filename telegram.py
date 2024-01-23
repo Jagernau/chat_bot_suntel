@@ -2,7 +2,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.utils import executor
-from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge, show_not_abons 
+from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge, show_not_abons, show_select_date_chenge
 import config
 import funcs
 from buttons import keyboard
@@ -80,6 +80,13 @@ async def send_data(message: types.Message):
             show_not_abons(str(message.text).split(":")[1])
             file = types.InputFile(f'{funcs.get_yesterday()}_difference.xls')
             await bot.send_document(chat_id=message.from_user.id, document=file)
+
+        if "new:" in message.text:
+            month_day = str(message.text).split(":")[1]
+            show_select_date_chenge(month_day)            
+            file = types.InputFile(f"{str(month_day)}_show_chenge_objects.xls")            
+            await bot.send_document(chat_id=message.from_user.id, document=file)
+
 
 
             

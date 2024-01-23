@@ -101,6 +101,29 @@ def show_chenge():
     excel_writer.save()
     cursor.close()
 
+
+def show_select_date_chenge(month_day: str):
+    prew_day = str(int(month_day.split("-")[1]) - 1).zfill(2)
+    prew_date = f'{month_day.split("-")[0]}-{prew_day}'
+    
+    
+    cursor = conn.cursor()
+    cursor.execute(query.show_chenge_select_date.replace("XXX", str(month_day)).replace("YYY", prew_date))
+    today_data = cursor.fetchall()
+    df = pd.DataFrame(today_data, columns=['Логин', 'Объект', 'Система'])
+    df['Система'] = df['Система'].apply(lambda x: funcs.get_monitoring_system((x)))
+    excel_writer = StyleFrame.ExcelWriter(f'{str(month_day)}_show_chenge_objects.xls')
+    sf = StyleFrame(df)
+    sf.set_column_width('Логин', 30)
+    sf.set_column_width('Объект', 40)
+    sf.set_column_width('Система', 10)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
+    cursor.close()
+
+
+
+
 def show_not_abons(id_system):
     cursor = conn.cursor()
     cursor.execute(query.all_db_object_today.replace('XXX', str(id_system)))

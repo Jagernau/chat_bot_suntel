@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import datetime
+
 klient_price = '''
 select 
   case when ta.inn is not null then ta.name else tk.name end as "Контрагент", 
@@ -86,6 +87,19 @@ select login, object, idsystem from tdata
 WHERE dimport = (SELECT CAST(MAX(dimport) - INTERVAL '1' DAY AS TIMESTAMP WITHOUT TIME ZONE) FROM tdata)
 
 '''
+
+show_chenge_select_date = f'''
+select login, object, idsystem from tdata
+where dimport = '{datetime.now().year}-XXX 01:40:00'
+EXCEPT
+select login, object, idsystem from tdata
+WHERE dimport = '{datetime.now().year}-YYY 01:40:00'
+
+'''
+
+
+
+
 klient_price_with_mail = '''
 select 
   case when ta.inn is not null then ta.name else tk.name end as "Контрагент", 
