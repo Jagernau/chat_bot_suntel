@@ -18,7 +18,7 @@ conn = psycopg2.connect(
     password=config.DB_PASSWORD
 )
 
-async def get_data_from_database() -> typing.List:
+def get_data_from_database() -> typing.List:
     """ 
     Получение данных из базы данных 
     Отдвёт в виде списка дублей
@@ -31,7 +31,7 @@ async def get_data_from_database() -> typing.List:
     return data
 
 
-async def get_data_from_object(name: str) -> typing.List:
+def get_data_from_object(name: str) -> typing.List:
     """
     Получение данных из базы данных по имени объекта
     Принимает имя объекта, отдвёт в виде списка
