@@ -4,7 +4,7 @@ from database import get_data_from_database, get_data_from_object, get_klient_pr
 import config
 import funcs
 from buttons import first_admin_menu
-
+from mail_sender import mails_sender
 
 
 
@@ -24,24 +24,24 @@ def command_start_handler(message: telebot.types.Message) -> None:
     else:
         bot.send_message(message.chat.id, text=f"Тебя нет в списке, твой id {message.from_user.id}. Напиши Максу свой id и своё Имя, если хочешь вступить.")
 
-@bot.message_handler(func=lambda message: message.text == "Дубли")
-def send_duble(message: telebot.types.Message) -> None:
-    if str(message.from_user.id) in list(config.USERS_ID_LIST):
-            data = get_data_from_database()
-            text = ""
-            for item in data:
-                text += f"{item[0]}: {item[1]}\n"
-            bot.send_message(message.chat.id, text=text)
-    else:
-        pass
+# @bot.message_handler(func=lambda message: message.text == "Дубли")
+# def send_duble(message: telebot.types.Message) -> None:
+#     if str(message.from_user.id) in list(config.USERS_ID_LIST):
+#             data = get_data_from_database()
+#             text = ""
+#             for item in data:
+#                 text += f"{item[0]}: {item[1]}\n"
+#             bot.send_message(message.chat.id, text=text)
+#     else:
+#         pass
 
 @bot.message_handler(func=lambda message: message.text == "Клиенты exel")
 def send_clients(message: telebot.types.Message):
     if str(message.from_user.id) in list(config.USERS_ID_LIST):
             get_klient_price()
-            file = telebot.types.InputFile(f'{funcs.get_yesterday()}_klient_price.xls')
+            file = f'{funcs.get_yesterday()}_klient_price.xls'
 
-            bot.send_document(message.chat.id, document=file)
+            mails_sender(str(message.from_user.id), file)
     else:
         pass
 
@@ -49,8 +49,9 @@ def send_clients(message: telebot.types.Message):
 def send_counter(message: telebot.types.Message):
     if str(message.from_user.id) in list(config.USERS_ID_LIST):
             get_klient_count()
-            file = telebot.types.InputFile(f'{funcs.get_yesterday()}_klient_count.xls')
-            bot.send_document(message.chat.id, document=file)
+            file = f'{funcs.get_yesterday()}_klient_count.xls'
+
+            mails_sender(str(message.from_user.id), file)
     else:
         pass
 
@@ -58,8 +59,9 @@ def send_counter(message: telebot.types.Message):
 def send_new_object(message: telebot.types.Message):
     if str(message.from_user.id) in list(config.USERS_ID_LIST):
             show_chenge()
-            file = telebot.types.InputFile(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
-            bot.send_document(message.chat.id, document=file)
+            file = f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls'
+            
+            mails_sender(str(message.from_user.id), file)
     else:
         pass
 
