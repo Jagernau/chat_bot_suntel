@@ -7,7 +7,7 @@ import pandas as pd
 from styleframe import StyleFrame
 import funcs
 import typing
-
+from my_logger import logger
 
 
 conn = psycopg2.connect(
@@ -49,9 +49,12 @@ def get_klient_price() -> None:
     Получение данных из базы данных
     сохраняет в xls таблицу клиентов, систеу мониторинга, объекты
     """
+    logger.info('Начало получения данных из базы данных по klient_price')
     cursor = conn.cursor()
     cursor.execute(query.klient_price)
     data = cursor.fetchall()
+    logger.info('Данные из базы данных получены по клиент_price')
+    logger.info('Начало записи в xls таблицу klient_price')
     df = pd.DataFrame(data, columns=['Контрагент', 'Система', 'Объект'])
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_klient_price.xls')
     sf = StyleFrame(df)
@@ -61,7 +64,9 @@ def get_klient_price() -> None:
 
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    logger.info('Данные записаны в xls таблицу klient_price')
     cursor.close()
+    logger.info('Курсор закрыт по klient_price')
 
 def get_one_klient(name: str):
     cursor = conn.cursor()
@@ -71,9 +76,12 @@ def get_one_klient(name: str):
     return data
 
 def get_klient_count():
+    logger.info('Начало получения данных из базы данных по klient_count')
     cursor = conn.cursor()
     cursor.execute(query.klient_price)
     data = cursor.fetchall()
+    logger.info('Данные из базы данных получены по klient_count')
+    logger.info('Начало записи в xls таблицу klient_count')
     data_array = funcs.klient_count(data)
     df = pd.DataFrame(data_array, columns=['Контрагент', 'Система', 'Число объектов'])
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_klient_count.xls')
@@ -83,13 +91,17 @@ def get_klient_count():
     sf.set_column_width('Число объектов', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    logger.info('Данные записаны в xls таблицу klient_count')
     cursor.close()
-
+    logger.info('Курсор закрыт по klient_count')
 
 def show_chenge():
+    logger.info('Начало получения данных из базы данных по show_chenge')
     cursor = conn.cursor()
     cursor.execute(query.show_chenge_objects_to_day)
     today_data = cursor.fetchall()
+    logger.info('Данные из базы данных получены по show_chenge')
+    logger.info('Начало записи в xls таблицу show_chenge')
     df = pd.DataFrame(today_data, columns=['Логин', 'Объект', 'Система'])
     df['Система'] = df['Система'].apply(lambda x: funcs.get_monitoring_system((x)))
     excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls')
@@ -99,7 +111,9 @@ def show_chenge():
     sf.set_column_width('Система', 10)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
+    logger.info('Данные записаны в xls таблицу show_chenge')
     cursor.close()
+    logger.info('Курсор закрыт по show_chenge')
 
 
 def show_select_date_chenge(month_day: str):
@@ -125,6 +139,7 @@ def show_select_date_chenge(month_day: str):
 
 
 def show_not_abons(id_system):
+    logger.info('Начало получения данных из базы данных по show_not_abons')
     cursor = conn.cursor()
     cursor.execute(query.all_db_object_today.replace('XXX', str(id_system)))
     today_objects = cursor.fetchall()
@@ -132,8 +147,11 @@ def show_not_abons(id_system):
     cursor = conn.cursor()
     cursor.execute(query.abonents_object.replace('XXX', str(id_system)))
     abonents_objects = cursor.fetchall()
+    logger.info('Данные из базы данных получены по show_not_abons')
     cursor.close()
+    logger.info('Курсор закрыт по show_not_abons')
 
+    logger.info('Начало записи в xls таблицу show_not_abons')
     set_today_objects = set()
     set_abonents_objects = set()
 
@@ -159,4 +177,4 @@ def show_not_abons(id_system):
     sf.set_column_width("Логин", 30)
     sf.to_excel(excel_writer=excel_writer)
     excel_writer.save()
-    
+    logger.info('Данные записаны в xls таблицу show_not_abons')

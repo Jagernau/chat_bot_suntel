@@ -5,6 +5,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import config
 import time
+from my_logger import logger
 
 class EmailSender:
     def __init__(self, email_sender: str, email_password: str, smtp_server: str) -> None:
@@ -73,9 +74,13 @@ def mails_sender(id_telegram: str, filename: str) -> None:
 
     if id_telegram in config.USERS_ID_LIST:
         email_receiver = config.USER_MAILS_DICT[id_telegram]
-        email_subject = f'Тестовое письмо {filename}'
-        email_body = f'Тестовое письмо {filename}'
-        email.create_message(email_receiver, email_subject, email_body)
-        email.attach_file(filename)
-        email.send_email()
-        time.sleep(35)
+        email_subject = f'Файл {filename}'
+        email_body = f'файл {filename}'
+        try:
+            email.create_message(email_receiver, email_subject, email_body)
+            email.attach_file(filename)
+            email.send_email()
+            logger.info(f'Отправлено письмо {filename} пользователю {id_telegram} {email_receiver}' )
+            time.sleep(35)
+        except Exception as e:
+            logger.error(f'Возникла ошибка при отправке письма {filename} пользователю {id_telegram} {email_receiver}: {e}')
