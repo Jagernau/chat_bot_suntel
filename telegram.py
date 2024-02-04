@@ -47,10 +47,11 @@ try:
     def send_clients(message: telebot.types.Message):
         if str(message.from_user.id) in list(config.USERS_ID_LIST):
                 logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} отправил команду klient_price')
+                bot.send_message(message.chat.id, text="Запрс к базе начат")
                 get_klient_price()
                 file = f'{funcs.get_yesterday()}_klient_price.xls'
                 mails_sender(str(message.from_user.id), file)
-                bot.send_message(message.chat.id, text="Отправлено на почту")
+                bot.send_message(message.chat.id, text=f"Отправлено на почту {file}")
         else:
             bot.send_message(message.chat.id, text="Тебя нет в списке, твой id {message.from_user.id}. Напиши Максу свой id и своё Имя, если хочешь вступить")
             logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} попытался запросить клиентов excel')
@@ -65,10 +66,11 @@ try:
     def send_counter(message: telebot.types.Message):
         if str(message.from_user.id) in list(config.USERS_ID_LIST):
                 logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} отправил команду klient_count')
+                bot.send_message(message.chat.id, text="Запрс к базе начат")
                 get_klient_count()
                 file = f'{funcs.get_yesterday()}_klient_count.xls'
                 mails_sender(str(message.from_user.id), file)
-                bot.send_message(message.chat.id, text="Отправлено на почту")
+                bot.send_message(message.chat.id, text=f"Отправлено на почту {file}")
         else:
             bot.send_message(message.chat.id, text="Тебя нет в списке, твой id {message.from_user.id}. Напиши Максу свой id и своё Имя, если хочешь вступить")
             logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} попытался запросить счётчик систем')
@@ -84,11 +86,12 @@ try:
     def send_new_object(message: telebot.types.Message):
         if str(message.from_user.id) in list(config.USERS_ID_LIST):
                 logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} отправил команду new_object')
+                bot.send_message(message.chat.id, text="Запрс к базе начат")
                 show_chenge()
                 file = f'{funcs.get_yesterday()}_show_chenge_objects_to_day.xls'
                 
                 mails_sender(str(message.from_user.id), file)
-                bot.send_message(message.chat.id, text="Отправлено на почту")
+                bot.send_message(message.chat.id, text=f"Отправлено на почту {file}")
         else:
             bot.send_message(message.chat.id, text="Тебя нет в списке, твой id {message.from_user.id}. Напиши Максу свой id и своё Имя, если хочешь вступить")
             logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} попытался запросить NewObject')
@@ -133,10 +136,11 @@ try:
             args = str(message.text).split(" ")
             logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} отправил команду лишние {args}')
             if len(args) == 2:
+                bot.send_message(message.chat.id, text="Запрс к базе начат")
                 show_not_abons(args[1])
                 file = f'{funcs.get_yesterday()}_difference.xls'
                 mails_sender(str(message.from_user.id), file)
-                bot.send_message(message.chat.id, text="Отправлено на почту")
+                bot.send_message(message.chat.id, text=f"Отправлено на почту {file}")
                 
             else:
                 bot.send_message(message.chat.id, text="Неверное количество аргументов")
