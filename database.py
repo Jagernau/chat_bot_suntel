@@ -18,17 +18,28 @@ conn = psycopg2.connect(
     password=config.DB_PASSWORD
 )
 
-def get_data_from_database() -> typing.List:
+def get_dubles_from_database():
     """ 
     Получение данных из базы данных 
     Отдвёт в виде списка дублей
 
     """
+    logger.info('Начало получения данных из базы данных по get_dubles_from_database')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM vdubles;")
     data = cursor.fetchall()
+    logger.info('Данные из базы данных получены по get_dubles_from_database')
     cursor.close()
-    return data
+    logger.info('Курсор закрыт по get_dubles_from_database')
+    logger.info('Начало записи в xls таблицу get_dubles_from_database')
+    df = pd.DataFrame(data, columns=['Объект_1', 'Объект_2'])
+    excel_writer = StyleFrame.ExcelWriter(f'{funcs.get_yesterday()}_dubles.xls')
+    sf = StyleFrame(df)
+    sf.set_column_width('Объект_1', 40)
+    sf.set_column_width('Объект_2', 40)
+    sf.to_excel(excel_writer=excel_writer)
+    excel_writer.save()
+    logger.info('Данные записаны в xls таблицу get_dubles_from_database')
 
 
 def get_data_from_object(name: str) -> typing.List:

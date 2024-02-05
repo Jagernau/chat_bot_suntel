@@ -1,6 +1,6 @@
 import telebot
 
-from database import get_data_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge, show_not_abons, show_select_date_chenge
+from database import get_dubles_from_database, get_data_from_object, get_klient_price, get_one_klient, get_klient_count, show_chenge, show_not_abons, show_select_date_chenge
 import config
 import funcs
 from buttons import first_admin_menu
@@ -30,17 +30,23 @@ try:
 except Exception as e:
     logger.error(f'----Блок start возникла ошибка: {e}')
 
+try:
+    @bot.message_handler(func=lambda message: message.text == "Дубли")
+    def send_duble(message: telebot.types.Message) -> None:
+        if str(message.from_user.id) in list(config.USERS_ID_LIST):
+            logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} отправил команду dubles')
+            bot.send_message(message.chat.id, text="Запрс к базе начат")
+            get_dubles_from_database()
+            file = f'{funcs.get_yesterday()}_dubles.xls'
+            mails_sender(str(message.from_user.id), file)
+            bot.send_message(message.chat.id, text=f"Отправлено на почту {file}")
+        else:
+            bot.send_message(message.chat.id, text="Тебя нет в списке, твой id {message.from_user.id}. Напиши Максу свой id и своё Имя, если хочешь вступить")
+            logger.info(f'Пользователь {message.from_user.id} {message.from_user.first_name} {message.from_user.last_name} {message.from_user.username} попытался запросить дубли')
+    logger.info('-----Блок dubles выполнен')
+except Exception as e:
+    logger.error(f'----Блок dubles возникла ошибка: {e}')
 
-# @bot.message_handler(func=lambda message: message.text == "Дубли")
-# def send_duble(message: telebot.types.Message) -> None:
-#     if str(message.from_user.id) in list(config.USERS_ID_LIST):
-#             data = get_data_from_database()
-#             text = ""
-#             for item in data:
-#                 text += f"{item[0]}: {item[1]}\n"
-#             bot.send_message(message.chat.id, text=text)
-#     else:
-#         pass
 
 try:
     @bot.message_handler(func=lambda message: message.text == "Клиенты exel")
@@ -59,6 +65,7 @@ try:
     logger.info('----Блок клиенты exel выполнен')
 except Exception as e:
     logger.error(f'----Блок клиенты exel возникла ошибка: {e}')
+
 
 
 try:
