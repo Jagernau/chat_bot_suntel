@@ -34,6 +34,7 @@ and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTES
 and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
+and upper(t2.object) not like '%РЕТРЭРА%'
 and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
@@ -73,6 +74,7 @@ and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTES
 and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
+and upper(t2.object) not like '%РЕТРЭРА%'
 and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
@@ -136,6 +138,7 @@ and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTES
 and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
+and upper(t2.object) not like '%РЕТРЭРА%'
 and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
@@ -173,6 +176,7 @@ and not (upper(t2.object) like '%TEST%' and upper(t2.object) not like '%MICROTES
 and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
+and upper(t2.object) not like '%РЕТРЭРА%'
 and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
