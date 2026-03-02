@@ -6,7 +6,7 @@ import funcs
 from buttons import first_admin_menu
 from mail_sender import mails_sender
 from my_logger import logger
-
+import time
 
 
 TOKEN = config.TOKEN
@@ -156,7 +156,11 @@ except Exception as e:
 
 
 
-
 if __name__ == '__main__':
     logger.info('Бот запущен')
-    bot.infinity_polling()            
+    while True:
+        try:
+            bot.infinity_polling()
+        except Exception as e:
+            logger.error(f"Ошибка в работе бота: {e}. Перезапуск через 10 секунд...")
+            time.sleep(10)

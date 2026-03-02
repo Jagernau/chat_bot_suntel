@@ -10,6 +10,8 @@ select
      when t2.idsystem = 14 then 'Scout'
      when t2.idsystem = 15 then 'Era'
      when t2.idsystem = 16 then 'WLocal'
+     when t2.idsystem = 17 then 'Scout_365'
+     when t2.idsystem = 18 then 'Axenta'
      else ''
      end,
   t2.object
@@ -35,7 +37,7 @@ and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
 and upper(t2.object) not like '%РЕТРЭРА%'
-and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
+and upper(t2.object) not like '%ПЕРЕ%'
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
 order by 1
@@ -51,6 +53,8 @@ select
      when t2.idsystem = 14 then 'Scout'
      when t2.idsystem = 15 then 'Era'
      when t2.idsystem = 16 then 'WLocal'
+     when t2.idsystem = 17 then 'Scout_365'
+     when t2.idsystem = 18 then 'Axenta'
      else ''
      end,
   t2.object
@@ -75,7 +79,7 @@ and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
 and upper(t2.object) not like '%РЕТРЭРА%'
-and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
+and upper(t2.object) not like '%ПЕРЕ%'
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
 order by 1
@@ -112,6 +116,8 @@ select
      when t2.idsystem = 14 then 'Scout'
      when t2.idsystem = 15 then 'Era'
      when t2.idsystem = 16 then 'WLocal'
+     when t2.idsystem = 17 then 'Scout_365'
+     when t2.idsystem = 18 then 'Axenta'
      else ''
      end,
   t2.object, tm.email
@@ -139,7 +145,7 @@ and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
 and upper(t2.object) not like '%РЕТРЭРА%'
-and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
+and upper(t2.object) not like '%ПЕРЕ%'
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
 order by 1
@@ -177,7 +183,7 @@ and upper(t2.object) not like '%ПРИОСТ%'
 and upper(t2.object) not like '%ППРО%'
 and upper(t2.object) not like '%НОВТ%'
 and upper(t2.object) not like '%РЕТРЭРА%'
-and not (upper(t2.object) like '%ПЕРЕ%' and t2.idsystem in (11,16))
+and upper(t2.object) not like '%ПЕРЕ%'
 and not (upper(t2.login) like '%ТЕСТ%' and t2.idsystem in (15))
 and tk.id not in (2752, 1925, 3287)
 '''
